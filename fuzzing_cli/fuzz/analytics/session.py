@@ -180,7 +180,7 @@ class Session:
                 f"{options.analytics_endpoint}/sessions",
                 json=session,
                 headers={"Content-Type": "application/json"},
-            )
+            timeout=60)
             if result.status_code == 200:
                 LOGGER.debug("Analytics session sent successfully")
             else:
@@ -227,7 +227,7 @@ class Session:
                 f"{options.analytics_endpoint}/crash-reports",
                 json=crash_report,
                 headers={"Content-Type": "application/json"},
-            )
+            timeout=60)
             if result.status_code == 200:
                 LOGGER.debug("Crash report sent successfully")
             else:
