@@ -4,6 +4,7 @@ import subprocess
 from typing import List, Optional, Tuple
 
 from fuzzing_cli.util import sol_files_by_directory
+from security import safe_command
 
 SCRIBBLE_ARMING_META_FILE = ".scribble-arming.meta.json"
 
@@ -37,8 +38,7 @@ class ScribbleMixin:
         :param remappings: Optional solc import remappings
         :return: The deserialized scribble JSON output object
         """
-        process = subprocess.run(
-            [scribble_path, "--input-mode=source", "--output-mode=json"]
+        process = safe_command.run(subprocess.run, [scribble_path, "--input-mode=source", "--output-mode=json"]
             + ([f"--path-remapping={';'.join(remappings)}"] if remappings else [])
             + [target],
             stdout=subprocess.PIPE,
@@ -96,8 +96,7 @@ class ScribbleMixin:
 
         command.extend(sol_files)
 
-        process = subprocess.run(
-            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        process = safe_command.run(subprocess.run, command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
 
         return ScribbleMixin._handle_scribble_error(process)
@@ -125,8 +124,7 @@ class ScribbleMixin:
 
         command.extend(sol_files)
 
-        process = subprocess.run(
-            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        process = safe_command.run(subprocess.run, command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
 
         return ScribbleMixin._handle_scribble_error(process)
