@@ -52,7 +52,7 @@ class FaasClient:
                 self.options.faas_url, "api/campaigns/?start_immediately=true"
             )
             response_status_code = -1
-            response = requests.post(req_url, json=payload, headers=self.headers)
+            response = requests.post(req_url, json=payload, headers=self.headers, timeout=60)
             # We need to store the response status code before we call response.json() because .json() may raise an exception
             # and we want to be able to access the status code in the exception handler to handle the 502s.
             response_status_code = response.status_code
