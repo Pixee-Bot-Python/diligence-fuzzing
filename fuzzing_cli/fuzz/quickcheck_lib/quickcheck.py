@@ -11,6 +11,7 @@ from fuzzing_cli.fuzz.scribble import ScribbleMixin
 from fuzzing_cli.fuzz.solidity import SolidityJob
 from fuzzing_cli.fuzz.types import Contract, Source
 from fuzzing_cli.util import get_content_from_file
+from security import safe_command
 
 LOGGER = logging.getLogger("fuzzing-cli")
 
@@ -29,8 +30,7 @@ def annotate_contracts(targets: List[str], scribble_generator_path: str) -> List
     annotated_files: List[Path] = []
 
     try:
-        process: subprocess.CompletedProcess = subprocess.run(
-            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        process: subprocess.CompletedProcess = safe_command.run(subprocess.run, command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         if process.returncode != 0:
             reason = f"{process.stdout.decode()}\n{process.stderr.decode()}"
