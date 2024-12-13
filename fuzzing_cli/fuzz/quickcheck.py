@@ -1,4 +1,3 @@
-import random
 import string
 from pathlib import Path
 from typing import List, Optional
@@ -15,6 +14,7 @@ from fuzzing_cli.fuzz.config.generate import (
     determine_targets,
 )
 from fuzzing_cli.fuzz.quickcheck_lib import annotate_contracts
+import secrets
 
 
 def create_config(
@@ -57,7 +57,7 @@ def generate_config_name(suffix: Optional[str] = None, randomize_name=False):
     if not suffix:
         suffix = Path.cwd().name.lower().replace("-", "_")
     if randomize_name:
-        suffix += f"_{''.join(random.choice(string.ascii_lowercase) for _ in range(3))}"
+        suffix += f"_{''.join(secrets.choice(string.ascii_lowercase) for _ in range(3))}"
     return f".fuzz_{suffix}.yml"
 
 
@@ -143,7 +143,7 @@ def fuzz_auto(
                 ide=ide,
                 targets=[str(target)],
                 number_of_cores=number_of_cores,
-                campaign_name_prefix=f"{campaign_name_prefix}_{''.join(random.choice(string.ascii_lowercase) for _ in range(3))}",
+                campaign_name_prefix=f"{campaign_name_prefix}_{''.join(secrets.choice(string.ascii_lowercase) for _ in range(3))}",
                 remappings=remap_import,
                 solc_version=solc_version,
                 scribble_path=scribble_path,
