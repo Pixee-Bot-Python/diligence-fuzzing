@@ -22,6 +22,7 @@ from fuzzing_cli.fuzz.quickcheck_lib.quickcheck import (
     prepare_seed_state as prepare_seed_state_base,
 )
 from fuzzing_cli.fuzz.run import submit_campaign
+from security import safe_command
 
 LOGGER = logging.getLogger("fuzzing-cli")
 
@@ -55,8 +56,7 @@ def parse_config() -> Dict[str, Any]:
 
 
 def run_build_command(cmd):
-    return subprocess.run(
-        cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    return safe_command.run(subprocess.run, cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
 
 
@@ -108,8 +108,7 @@ def collect_tests(
         f"Invoking `forge test --list` command to list tests ({json.dumps(cmd)})"
     )
     try:
-        result = subprocess.run(
-            cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        result = safe_command.run(subprocess.run, cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
         )
     except Exception as e:
         raise ForgeCollectTestsError() from e
