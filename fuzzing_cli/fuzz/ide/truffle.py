@@ -11,6 +11,7 @@ from fuzzing_cli.fuzz.config import FuzzingOptions
 from fuzzing_cli.fuzz.exceptions import BuildArtifactsError
 from fuzzing_cli.fuzz.ide.generic import Contract, IDEArtifacts, Source
 from fuzzing_cli.util import LOGGER
+from security import safe_command
 
 
 class TruffleArtifacts(IDEArtifacts):
@@ -123,8 +124,7 @@ class TruffleArtifacts(IDEArtifacts):
                     # here we're using the tempfile to overcome the subprocess.PIPE's buffer size limit (65536 bytes).
                     # This limit becomes a problem on a large sized output which will be truncated, resulting to an invalid json
 
-                    process: CompletedProcess = run(
-                        [executable, "db", "query", f"{query}"],
+                    process: CompletedProcess = safe_command.run(run, [executable, "db", "query", f"{query}"],
                         stdout=f,
                         stderr=PIPE,
                         cwd=project_dir,
