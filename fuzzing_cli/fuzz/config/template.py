@@ -76,7 +76,7 @@ fuzz:
 """
 
 
-env = Environment()
+env = Environment(autoescape=True)
 template = env.from_string(CONFIG_TEMPLATE)
 
 
