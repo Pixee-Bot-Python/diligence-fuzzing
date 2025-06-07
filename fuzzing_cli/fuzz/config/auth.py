@@ -41,7 +41,7 @@ class AuthHandler:
                 "client_id": self.options.auth_client_id,
                 "refresh_token": self.options.refresh_token,
             },
-        )
+        timeout=60)
         body = response.json()
         if response.status_code != 200:
             error = body.get("error", "")
