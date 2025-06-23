@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-import random
 import string
 from typing import Dict
 from urllib.parse import urljoin
@@ -14,6 +13,7 @@ from fuzzing_cli.fuzz.scribble import ScribbleMixin
 from .config import AuthHandler, FuzzingOptions
 from .exceptions import BadStatusCode, RequestError, ScribbleMetaError
 from .ide.generic import IDEArtifacts
+import secrets
 
 LOGGER = logging.getLogger("fuzzing-cli")
 
@@ -42,7 +42,7 @@ class FaasClient:
     def generate_campaign_name(self):
         """Return a random name with the provided prefix self.campaign_name_prefix."""
         letters = string.ascii_lowercase
-        random_string = "".join(random.choice(letters) for _ in range(5))
+        random_string = "".join(secrets.choice(letters) for _ in range(5))
         return str(self.options.campaign_name_prefix + "_" + random_string)
 
     def start_faas_campaign(self, payload):
